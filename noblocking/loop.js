@@ -21,3 +21,5 @@ setTimeout(()=>{
 setTimeout(()=>{
   console.log('2')
 },800)
+
+
