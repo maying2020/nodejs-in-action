@@ -5,11 +5,11 @@ net.createServer((socket)=>{
     socket.on('data',function(buffer){
         // console.log('buffer',buffer,buffer.toString())
         const lessonId = buffer.readInt32BE();
-       setTimeout(function(){
+    setTimeout(function(){
         socket.write(
             Buffer.from(LESSON_DATA[lessonId])
         )
-       },500)
+    },500)
     })
 })
 .listen(6002)
