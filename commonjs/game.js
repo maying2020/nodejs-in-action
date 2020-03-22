@@ -19,7 +19,6 @@ exports.hello="world"
 // 使用commonjs实现剪刀石头布游戏
 module.exports = (playerAction)=>{
   // var playerAction = process.argv[process.argv.length - 1];
-  
   var random1 = Math.random() * 3;
   
   if (random1 < 1) {
