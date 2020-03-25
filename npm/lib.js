@@ -1,5 +1,4 @@
 const EventEmitter = require('events')
-
 class Geektime extends EventEmitter{
   constructor(){
     super();

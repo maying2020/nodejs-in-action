@@ -1,13 +1,16 @@
 const net = require('net');
 
-const socket  = new net.Socket({});
+// 创建socket
+const socket = new net.Socket({});
 
+// 连接服务器
 socket.connect({
-    host:'127.0.0.1',
-    port:6002
-})
+    host: '127.0.0.1',
+    port: 6002
+});
 
-const LESSON_IDS = [
+
+const lessonids = [
     "136797",
     "136798",
     "136799",
@@ -29,24 +32,24 @@ const LESSON_IDS = [
     "146582"
 ]
 
+let id = Math.floor(Math.random() * lessonids.length);
 
-let buffer = Buffer.alloc(4);
-let index = Math.floor(Math.random() * LESSON_IDS.length);
-buffer.writeInt32BE(
-    LESSON_IDS[index]
-)
+// 往服务器传数据
+socket.write(encode(id));
 
-socket.write(buffer);
-
-socket.on('data',function(buffer){
+socket.on('data', (buffer) => {
     console.log(buffer.toString())
 
-    // 请求回来之后再次发送
-    buffer = Buffer.alloc(4);
-    index = Math.floor(Math.random() * LESSON_IDS.length)
-    buffer.writeInt32BE(
-        LESSON_IDS[index]
-    )
-    socket.write(buffer);
-}) //半双工通信（并发请求时候可能出现错乱的情况）
+    // 接收到数据之后，按照半双工通信的逻辑，马上开始下一次请求
+    id = Math.floor(Math.random() * lessonids.length);
+    socket.write(encode(id));
+})
 
+// 把编码请求包的逻辑封装为一个函数
+function encode(index) {
+    buffer = Buffer.alloc(4);
+    buffer.writeInt32BE(
+        lessonids[index]
+    );
+    return buffer;
+}
